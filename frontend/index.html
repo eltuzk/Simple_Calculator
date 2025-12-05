@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <div class="card">
+        <div class="row">
+            <input class="num" id="a1" type="number">
+            <span>+</span>
+            <input class="num" id="b1" type="number">
+            <span>=</span>
+            <span id="r1" class="result"></span>
+        </div>
+
+        <div class="row">
+            <input class="num" id="a2" type="number">
+            <span>-</span>
+            <input class="num" id="b2" type="number">
+            <span>=</span>
+            <span id="r2" class="result"></span>
+        </div>
+
+        <div class="row">
+            <input class="num" id="a3" type="number">
+            <span>x</span>
+            <input class="num" id="b3" type="number">
+            <span>=</span>
+            <span id="r3" class="result"></span>
+        </div>
+
+        <div class="row">
+            <input class="num" id="a4" type="number">
+            <span>/</span>
+            <input class="num" id="b4" type="number">
+            <span>=</span>
+            <span id="r4" class="result"></span>
+        </div>
+
+        <button onclick="calculateAll()">Calculate All</button>
+    </div>
+
+    <script>
+        async function callAPI(a, b, op) {
+            const res = await fetch("http://localhost:8080/api/calculate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ a: Number(a), b: Number(b), op })
+            });
+
+            const data = await res.json();
+            return data.res;
+        }
+
+        async function calculateAll() {
+            r1.innerText = await callAPI(a1.value, b1.value, "+");
+            r2.innerText = await callAPI(a2.value, b2.value, "-");
+            r3.innerText = await callAPI(a3.value, b3.value, "*");
+            r4.innerText = await callAPI(a4.value, b4.value, "/");
+        }
+
+    </script>
+
+</body>
+
+</html>
